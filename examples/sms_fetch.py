@@ -1,11 +1,9 @@
 from dinstar.sms import DinstarSMS
-from dinstar.models import DinstarSMSReceiveMessage
+from dinstar.models import DinstarSMSReceiveMessage, DinstarApiResponse
 from decouple import config
+from typing import List
 
-# This example demonstrates how to directly use the DinstarSMS class
-# without the DinstarClient wrapper. This gives you more granular control
-# if you only need access to one part of the API.
-
+# Initialize the SMS client
 sms_client = DinstarSMS(
     username=config("DINSTAR_USER"),
     password=config("DINSTAR_PASS"),
@@ -13,22 +11,30 @@ sms_client = DinstarSMS(
     verify_ssl=config("DINSTAR_VERIFY_SSL", cast=bool, default=True)
 )
 
-# Get all messages
-
 try:
-    messages: list[DinstarSMSReceiveMessage] = sms_client.receive_sms(flag="all")
-    print("Fetched SMS messages:")
-    for msg in messages:
-        print(f"[{msg.timestamp}] Port {msg.port} From {msg.number}: {msg.text}")
+    # Receive unread SMS messages with incoming_sms_id greater than 0
+    response: DinstarApiResponse[List[DinstarSMSReceiveMessage]] = sms_client.receive_sms(flag="all")
+
+    if response.error_code == 200 and response.data:
+        print("Fetched SMS messages:")
+        for msg in response.data:
+            print(f"[{msg.timestamp}] Port {msg.port} From {msg.number}: {msg.text}")
+    else:
+        print(f"Failed to fetch SMS messages. Error code: {response.error_code}")
 except Exception as e:
     print(f"Error receiving SMS messages: {e}")
 
 # Get all unread messages with ID greater than 90
 
 try:
-    messages: list[DinstarSMSReceiveMessage] = sms_client.receive_sms(incoming_sms_id=90, flag="unread")
-    print("Fetched SMS messages:")
-    for msg in messages:
-        print(f"[{msg.timestamp}] Port {msg.port} From {msg.number}: {msg.text}")
+    # Receive unread SMS messages with incoming_sms_id greater than 0
+    response: DinstarApiResponse[List[DinstarSMSReceiveMessage]] = sms_client.receive_sms(flag="unread",incoming_sms_id=90)
+
+    if response.error_code == 200 and response.data:
+        print("Fetched SMS messages:")
+        for msg in response.data:
+            print(f"[{msg.timestamp}] Port {msg.port} From {msg.number}: {msg.text}")
+    else:
+        print(f"Failed to fetch SMS messages. Error code: {response.error_code}")
 except Exception as e:
     print(f"Error receiving SMS messages: {e}")
