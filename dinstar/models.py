@@ -15,9 +15,7 @@ class DinstarApiResponse(Generic[T]):
         error_code (int): The status code returned by the API.
             Common codes:
             - 200: Request processed successfully
-            - 202: Request accepted (for async operations)
             - 400: Bad request format
-            - 413: Too many phone numbers (max 32)
             - 500: Internal server error or other errors
         sn (str): The serial number of the Dinstar gateway device.
         data (Optional[T]): The typed response data payload on success,
@@ -33,6 +31,44 @@ class DinstarApiResponse(Generic[T]):
     sn: str
     data: Optional[T] = None
 
+"""
+Dinstar CDR datamodels
+"""
+@dataclass
+class DinstarCDRRecord:
+    """
+    Represents a Call Detail Record (CDR) from the Dinstar gateway.
+
+    Attributes:
+        port (int): Port number associated with the call.
+        start_date (str): Call start time in 'YYYY-MM-DD HH:MM:SS' format.
+        answer_date (str): Call answer time in 'YYYY-MM-DD HH:MM:SS' format.
+        duration (int): Duration of the call in seconds.
+        source_number (str): Number of the calling party.
+        destination_number (str): Number of the called party.
+        direction (str): Call direction (e.g., 'gsm->ip', 'ip->gsm', 'callback').
+        ip (str): Source IP address for IP to GSM calls.
+        codec (str): Codec used for the call (e.g., 'G.711U', 'G.723.1').
+        hangup (str): Which party hung up ('called', 'calling', or 'gateway').
+        gsm_code (int): GSM reason code for call hangup.
+        bcch (str): Broadcast Control Channel information used during the call.
+    """
+    port: int
+    start_date: str
+    answer_date: str
+    duration: int
+    source_number: str
+    destination_number: str
+    direction: str
+    ip: str
+    codec: str
+    hangup: str
+    gsm_code: int
+    bcch: str
+
+"""
+Dinstar SMS datamodels
+"""
 @dataclass
 class DinstarSendSMSResponse:
     """
