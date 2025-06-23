@@ -85,10 +85,14 @@ class DinstarDeviceStatus:
         memory_free (str): Free memory size.
         memory_used (str): Used memory size.
     """
-    port_number: int
-    IP: str
-    MAC: str
-    status: str
+    cpu_used: str
+    flash_total: str
+    flash_used: str
+    memory_total: str
+    memory_cached: str
+    memory_buffers: str
+    memory_free: str
+    memory_used: str
 
 """
 Dinstar SMS datamodels

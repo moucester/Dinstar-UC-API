@@ -1,5 +1,5 @@
 from dinstar.base import DinstarUC
-from .models import DinstarDeviceStatus,
+from .models import DinstarDeviceStatus
 from typing import Optional
 
 class DinstarDevice(DinstarUC):
@@ -29,8 +29,9 @@ class DinstarDevice(DinstarUC):
         }
         """
         endpoint = "/api/get_status"
+        data = '["performance"]'
         # Send the JSON array as a string
-        response = self.send_raw_request(endpoint, data='["performance"]', method="POST")
+        response = self.send_raw_request(endpoint, data, method="POST")
 
         if response is None or response.status_code != 200:
             return None

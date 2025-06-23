@@ -43,7 +43,7 @@ class DinstarCDR(DinstarUC):
                 ]
             }
         """
-        endpoint = "/api/query_cdr"
+        endpoint = "/api/get_cdr"
         data = {}
         if ports:
             data["port"] = ports
@@ -52,7 +52,7 @@ class DinstarCDR(DinstarUC):
         if time_before:
             data["time_before"] = time_before
 
-        response_json = self.send_request(endpoint, data,method="POST")
+        response_json = self.send_request(endpoint, data, method="POST")
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         raw_cdrs = response_json.get("cdr", [])

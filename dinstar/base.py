@@ -88,14 +88,17 @@ class DinstarUC:
         """
         url = f"{self.gateway_url}{endpoint}"
         headers = {"Content-Type": "application/json"}
-
+        if isinstance(data, str):
+            body = data
+        else:
+            body = json.dumps(data) if data else None
         try:
             response = requests.request(
                 method=method,
                 url=url,
                 auth=HTTPDigestAuth(self.username, self.password),
                 headers=headers,
-                data=json.dumps(data) if data is not None else None,
+                data=data,
                 verify=self.verify_ssl
             )
             response.raise_for_status()  # Raises HTTPError for bad responses (4xx, 5xx)
