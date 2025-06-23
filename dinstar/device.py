@@ -1,21 +1,43 @@
 from dinstar.base import DinstarUC
-
+from .models import DinstarDeviceStatus,
+from typing import Optional
 
 class DinstarDevice(DinstarUC):
     """
     Class for handling device status operations using the Dinstar API.
     """
 
-    def get_status(self):
+    def get_device_status(self) -> Optional[DinstarDeviceStatus]:
         """
-        Retrieve device status from the gateway.
+        POST: Get performance metrics from the Dinstar device.
 
-        This method sends a request to the /api/get_status endpoint to retrieve
-        various performance metrics of the device, such as CPU usage, flash memory
-        usage, and RAM usage.
+        Returns:
+            [DinstarDeviceStatus]: API response wrapper containing performance data.
 
-        :return: JSON response from the API containing performance metrics.
+        Response example:
+        {
+            "performance": {
+                "cpu_used": "39",
+                "flash_total": "27648",
+                "flash_used": "17428",
+                "memory_total": "109448",
+                "memory_cached": "34192",
+                "memory_buffers": "0",
+                "memory_free": "58928",
+                "memory_used": "50520"
+            }
+        }
         """
         endpoint = "/api/get_status"
-        data = ["performance"]
-        return self.send_request(endpoint, data)
+        # Send the JSON array as a string
+        response = self.send_raw_request(endpoint, data='["performance"]', method="POST")
+
+        if response is None or response.status_code != 200:
+            return None
+
+        json_data = response.json()
+        performance_info = json_data.get("performance")
+        if not performance_info:
+            return None
+
+        return DinstarDeviceStatus(**performance_info)

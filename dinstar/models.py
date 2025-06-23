@@ -67,6 +67,30 @@ class DinstarCDRRecord:
     bcch: str
 
 """
+Dinstar device datamodels
+"""
+
+@dataclass
+class DinstarDeviceStatus:
+    """
+    Represents device performance and status information reported by the Dinstar gateway.
+
+    Attributes:
+        cpu_used (str): CPU usage percentage.
+        flash_total (str): Total flash memory size.
+        flash_used (str): Used flash memory size.
+        memory_total (str): Total memory size.
+        memory_cached (str): Cached memory size.
+        memory_buffers (str): Memory used for buffers.
+        memory_free (str): Free memory size.
+        memory_used (str): Used memory size.
+    """
+    port_number: int
+    IP: str
+    MAC: str
+    status: str
+
+"""
 Dinstar SMS datamodels
 """
 @dataclass

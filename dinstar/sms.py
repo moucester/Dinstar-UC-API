@@ -1,4 +1,3 @@
-import json
 from dinstar.base import DinstarUC
 
 from .models import (
