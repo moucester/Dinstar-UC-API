@@ -95,6 +95,53 @@ class DinstarDeviceStatus:
     memory_used: str
 
 """
+Dinstar port datamodels
+"""
+
+@dataclass
+class DinstarPortInfo:
+    """
+    Represents detailed information for a specific port on the Dinstar gateway.
+
+    Attributes:
+        port (int): Port number (0–31).
+        type (str): Network type (e.g., GSM, CDMA, WCDMA, LTE, UNKNOWN).
+        imei (str): IMEI of the modem.
+        imsi (str): IMSI of the inserted SIM card.
+        iccid (str): ICCID of the SIM card.
+        number (str): Mobile number associated with the SIM.
+        reg (str): Registration status (e.g., REGISTER_OK, NO_SIM, UNREGISTER).
+        slot (int): SIM slot index; 255 if not applicable.
+        callstate (str): Call state (e.g., Idle, Active, Ringing).
+        signal (int): Signal strength (0–31).
+        gprs (str): GPRS attachment status (e.g., attached, detached).
+        remain_credit (str): Total remaining credit.
+        remain_monthly_credit (str): Monthly remaining credit.
+        remain_daily_credit (str): Daily remaining credit.
+        remain_daily_call_time (str): Remaining call time for the day.
+        remain_hourly_call_time (str): Remaining call time for the hour.
+        remain_daily_connected (str): Remaining daily call connection count.
+    """
+    port: int
+    port: int
+    type: str
+    imei: str
+    imsi: str
+    iccid: str
+    number: str
+    reg: str
+    slot: int
+    callstate: str
+    signal: int
+    gprs: str
+    remain_credit: str
+    remain_monthly_credit: str
+    remain_daily_credit: str
+    remain_daily_call_time: str
+    remain_hourly_call_time: str
+    remain_daily_connected: str
+
+"""
 Dinstar SMS datamodels
 """
 @dataclass
