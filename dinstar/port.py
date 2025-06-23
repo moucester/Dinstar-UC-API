@@ -53,16 +53,36 @@ class DinstarPort(DinstarUC):
         data = [DinstarPortInfo(**item) for item in raw_info] if error_code == 200 else None
         return DinstarApiResponse(error_code=error_code, sn=sn, data=data)
 
-    def set_port_info(self, port, action, param, **kwargs):
+    def set_port_info(
+            self,
+            port: int,
+            action: str,
+            param: str,
+    ) -> DinstarApiResponse[None]:
         """
-        Set port information on the gateway.
-        :param port: Port number to configure.
-        :param action: The action to perform (e.g., 'slot', 'reset', 'power').
-        :param param: The parameter value for the action.
-        :param kwargs: Additional optional parameters.
-        :return: JSON response from the API.
+        Perform an action on a specific port, such as power control, SIM operations, or slot selection.
+
+        Args:
+            port (int): Port number (0–31).
+            action (str): Action to perform. Valid values include:
+                          "slot", "reset", "power", "imei", "number", "lock", "unlock",
+                          "block", "unblock", "CallForward", "CheckCallForward".
+            param (str): Action-specific parameter value, such as slot number, PIN, "on"/"off", etc.
+
+        Returns:
+            DinstarApiResponse[None]: Response containing error_code and SN if successful.
+
+        Example:
+            /api/set_port_info?port=1&action=power&param=off
         """
         endpoint = "/api/set_port_info"
-        data = {"port": port, "action": action, "param": param}
-        data.update(kwargs)
-        return self.send_request(endpoint, data)
+        params = {
+            "port": port,
+            "action": action,
+            "param": param
+        }
+
+        response = self.send_request(endpoint, data=params, method="GET")
+        error_code = response.get("error_code")
+        sn = response.get("sn")
+        return DinstarApiResponse(error_code=error_code, sn=sn, data=None)
