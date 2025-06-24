@@ -19,7 +19,7 @@ class DinstarSMSMessage(BaseModel):
 
     Attributes:
         text (str): The content of the SMS message.
-        number (list[int]): Number of the person who we want to send the message
+        number (str): Number of the person who we want to send the message
         port (list[int] | None): Optional. Port which we want to send via
         encoding (str): Encoding type, either 'unicode' or 'gsm-7bit' (default: 'unicode').
         request_status_report (bool): Whether to request SMS delivery status report (default: True).
@@ -56,7 +56,7 @@ class DinstarSMS(DinstarUC):
 
         Returns:
             dict: JSON response from the API containing:
-                - error_code (int): Status code, e.g., 202 for accepted.
+                - error_code (int): Status code, e.g., 200 for accepted.
                 - sn (str): Serial number of the gateway.
                 - sms_in_queue (int): Number of SMS messages waiting to be processed.
                 - task_id (int): ID of the SMS sending task.

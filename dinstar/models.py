@@ -118,7 +118,6 @@ class DinstarPortInfo:
         remain_daily_connected (str): Remaining daily call connection count.
     """
     port: int
-    port: int
     type: str
     imei: str
     imsi: str
