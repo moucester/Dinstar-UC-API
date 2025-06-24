@@ -88,6 +88,7 @@ Explore the examples/ folder:
 
 ## 🪪 License
 This project is licensed under the terms of the MIT license.
+For more details see [LICENSE](LICENSE)
 
 ## 🤝 Contributing
 Pull requests welcome.
