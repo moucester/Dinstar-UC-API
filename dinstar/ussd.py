@@ -44,7 +44,7 @@ class DinstarUSSD(DinstarUC):
             "command": command
         }
 
-        response = self.send_request(endpoint, data=payload)
+        response = self.send_api_request(endpoint, data=payload)
         error_code = response.get("error_code")
         sn = response.get("sn")
         raw_results = response.get("result", [])
@@ -74,7 +74,7 @@ class DinstarUSSD(DinstarUC):
             "port": ",".join(str(p) for p in ports)
         }
 
-        response = self.send_request(endpoint, data=params, method="GET")
+        response = self.send_api_request(endpoint, data=params, method="GET")
         error_code = response.get("error_code")
         sn = response.get("sn")
         raw_reply = response.get("reply", [])

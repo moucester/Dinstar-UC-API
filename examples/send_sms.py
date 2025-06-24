@@ -37,7 +37,7 @@ def main():
         return
 
     # 3. Check SMS queue to verify messages are queued
-    queue_response: DinstarApiResponse[DinstarSMSQueueStatus] = sms_client.query_sms_queue()
+    queue_response: DinstarApiResponse[DinstarSMSQueueStatus] = sms_client.get_sms_queue()
     if queue_response.error_code == 200 and queue_response.data:
         print(f"Current SMS queue length: {queue_response.data.in_queue}")
     else:
@@ -52,7 +52,7 @@ def main():
         print("No user IDs provided in messages to query result.")
         return
 
-    result_response: DinstarApiResponse[List[DinstarSMSResult]] = sms_client.query_sms_result(user_ids=user_ids)
+    result_response: DinstarApiResponse[List[DinstarSMSResult]] = sms_client.get_sms_result(user_ids=user_ids)
     if result_response.error_code == 200 and result_response.data:
         print("SMS send results:")
         for res in result_response.data:
@@ -70,7 +70,7 @@ def main():
     if ports_set:
         ports = sorted(ports_set)
 
-    delivery_response: DinstarApiResponse[List[DinstarSMSDeliveryStatus]] = sms_client.query_sms_delivery_status(
+    delivery_response: DinstarApiResponse[List[DinstarSMSDeliveryStatus]] = sms_client.get_sms_delivery_status(
         numbers=numbers,
         ports=ports,
     )

@@ -46,7 +46,7 @@ class DinstarPort(DinstarUC):
         if ports:
             params["port"] = ",".join(str(p) for p in ports)
 
-        response = self.send_request(endpoint, data=params, method="GET")
+        response = self.send_api_request(endpoint, data=params, method="GET")
         error_code = response.get("error_code")
         sn = response.get("sn")
         raw_info = response.get("info", [])
@@ -82,7 +82,7 @@ class DinstarPort(DinstarUC):
             "param": param
         }
 
-        response = self.send_request(endpoint, data=params, method="GET")
+        response = self.send_api_request(endpoint, data=params, method="GET")
         error_code = response.get("error_code")
         sn = response.get("sn")
         return DinstarApiResponse(error_code=error_code, sn=sn, data=None)

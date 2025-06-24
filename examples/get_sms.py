@@ -13,7 +13,7 @@ sms_client = DinstarSMS(
 
 try:
     # Receive unread SMS messages with incoming_sms_id greater than 0
-    response: DinstarApiResponse[List[DinstarSMSReceiveMessage]] = sms_client.receive_sms(flag="all")
+    response: DinstarApiResponse[List[DinstarSMSReceiveMessage]] = sms_client.get_sms(flag="all")
 
     if response.error_code == 200 and response.data:
         print("Fetched SMS messages:")
@@ -28,7 +28,7 @@ except Exception as e:
 
 try:
     # Receive unread SMS messages with incoming_sms_id greater than 0
-    response: DinstarApiResponse[List[DinstarSMSReceiveMessage]] = sms_client.receive_sms(flag="unread",incoming_sms_id=90)
+    response: DinstarApiResponse[List[DinstarSMSReceiveMessage]] = sms_client.get_sms(flag="unread", incoming_sms_id=90)
 
     if response.error_code == 200 and response.data:
         print("Fetched SMS messages:")

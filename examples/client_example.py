@@ -11,7 +11,7 @@ client = DinstarClient(
 
 # 1. Receive all SMS messages
 try:
-    messages = client.sms.receive_sms(flag="all")
+    messages = client.sms.get_sms(flag="all")
     print("Fetched SMS messages:")
     for msg in messages:
         print(msg)

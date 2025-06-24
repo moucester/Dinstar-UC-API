@@ -1,7 +1,7 @@
 import requests
 import json
 from requests.auth import HTTPDigestAuth
-from typing import Optional
+from typing import Optional, Union
 
 class DinstarUC:
     """
@@ -22,17 +22,26 @@ class DinstarUC:
         self.gateway_url = gateway_url
         self.verify_ssl = verify_ssl
 
-    def send_request(self, endpoint, data=None, method="POST"):
+    def send_api_request(
+        self,
+        endpoint: str,
+        data: Optional[any] = None,
+        method: str = "POST",
+        raw: bool = False
+    ) -> Optional[Union[dict, requests.Response]]:
         """
         Send an authenticated HTTP request to the Dinstar API.
 
         Args:
             endpoint (str): API endpoint to send the request to.
-            data (dict or None): Request payload for POST or query params for GET.
-            method (str): HTTP method, either 'GET' or 'POST'. Defaults to 'POST'.
+            data (any, optional): Request payload (dict for POST, query params for GET).
+            method (str): HTTP method ("GET" or "POST"). Defaults to "POST".
+            raw (bool): If True, return the full requests.Response object. Defaults to False.
 
         Returns:
-            dict: Parsed JSON response from the API, or error information on failure.
+            dict: Parsed JSON response if raw=False.
+            requests.Response: Full HTTP response if raw=True.
+            None: On failure.
         """
         url = f"{self.gateway_url}{endpoint}"
         headers = {"Content-Type": "application/json"}
@@ -47,10 +56,7 @@ class DinstarUC:
                     verify=self.verify_ssl
                 )
             elif method.upper() == "POST":
-                if isinstance(data, str):
-                    body = data
-                else:
-                    body = json.dumps(data) if data else None
+                body = data if isinstance(data, str) else json.dumps(data) if data else None
                 response = requests.post(
                     url,
                     auth=HTTPDigestAuth(self.username, self.password),
@@ -62,48 +68,8 @@ class DinstarUC:
                 raise ValueError(f"Unsupported HTTP method: {method}")
 
             response.raise_for_status()
-            return response.json()
+            return response if raw else response.json()
 
         except requests.exceptions.RequestException as e:
-            # Optionally log the error here
-            print(f"Request to {url} failed: {e}")
-            return {"error": str(e)}
-
-    def send_raw_request(self, endpoint: str, data: Optional[any], method: str = "POST") -> Optional[requests.Response]:
-        """
-        Send an authenticated HTTP request to the Dinstar API and return the full Response object.
-
-        Args:
-            endpoint (str): API endpoint to send the request to (e.g., "/api/get_status").
-            data (any, optional): Payload data to send with the request. Should be JSON serializable.
-            method (str): HTTP method to use. Defaults to "POST".
-
-        Returns:
-            requests.Response: The full HTTP response object on success.
-            None: If a request exception occurs.
-
-        Notes:
-            - SSL verification is configurable via self.verify_ssl.
-            - Exceptions are caught and logged internally; consider enhancing error handling as needed.
-        """
-        url = f"{self.gateway_url}{endpoint}"
-        headers = {"Content-Type": "application/json"}
-        if isinstance(data, str):
-            body = data
-        else:
-            body = json.dumps(data) if data else None
-        try:
-            response = requests.request(
-                method=method,
-                url=url,
-                auth=HTTPDigestAuth(self.username, self.password),
-                headers=headers,
-                data=data,
-                verify=self.verify_ssl
-            )
-            response.raise_for_status()  # Raises HTTPError for bad responses (4xx, 5xx)
-            return response
-        except requests.exceptions.RequestException as e:
-            # You can log the error here if you want
             print(f"Request to {url} failed: {e}")
             return None

@@ -52,7 +52,7 @@ class DinstarCDR(DinstarUC):
         if time_before:
             data["time_before"] = time_before
 
-        response_json = self.send_request(endpoint, data, method="POST")
+        response_json = self.send_api_request(endpoint, data)
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         raw_cdrs = response_json.get("cdr", [])

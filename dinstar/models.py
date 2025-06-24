@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Optional, TypeVar
+from typing import Generic, Optional, TypeVar, List
 
 T = TypeVar("T")
 
@@ -31,9 +31,8 @@ class DinstarApiResponse(Generic[T]):
     sn: str
     data: Optional[T] = None
 
-"""
-Dinstar CDR datamodels
-"""
+# --- Dinstar CDR datamodels ---
+
 @dataclass
 class DinstarCDRRecord:
     """
@@ -66,9 +65,7 @@ class DinstarCDRRecord:
     gsm_code: int
     bcch: str
 
-"""
-Dinstar device datamodels
-"""
+# --- Dinstar device datamodels ---
 
 @dataclass
 class DinstarDeviceStatus:
@@ -94,9 +91,7 @@ class DinstarDeviceStatus:
     memory_free: str
     memory_used: str
 
-"""
-Dinstar port datamodels
-"""
+# --- Dinstar port datamodels ---
 
 @dataclass
 class DinstarPortInfo:
@@ -141,9 +136,8 @@ class DinstarPortInfo:
     remain_hourly_call_time: str
     remain_daily_connected: str
 
-"""
-Dinstar SMS datamodels
-"""
+# --- Dinstar SMS datamodels ---
+
 @dataclass
 class DinstarSendSMSResponse:
     """
@@ -266,9 +260,40 @@ class DinstarStopSMSTaskResponse:
     error_code: int
     sn: str
 
-"""
-Dinstar USSD dataclasses
-"""
+# --- Dinstar STK dataclasses ---
+
+@dataclass
+class DinstarSTKItem:
+    """
+    Represents a selectable STK menu item.
+
+    Attributes:
+        item_id (int): The ID of the menu item.
+        item_string (str): The label or name of the menu item.
+    """
+    item_id: int
+    item_string: str
+
+
+@dataclass
+class DinstarSTKView:
+    """
+    Represents the current STK interface view returned by the gateway.
+
+    Attributes:
+        title (str): Title of the STK menu or view.
+        text (Optional[str]): Optional prompt or description text.
+        input_type (int): Defines the type of interaction required (e.g., display, select, input).
+        frame_id (int): Frame ID of the current STK view.
+        item (Optional[List[DinstarSTKItem]]): List of menu items (if applicable).
+    """
+    title: Optional[str]
+    text: Optional[str]
+    input_type: int
+    frame_id: int
+    item: Optional[List[DinstarSTKItem]] = None
+
+# --- Dinstar USSD dataclasses ---
 
 @dataclass
 class DinstarUSSDResult:

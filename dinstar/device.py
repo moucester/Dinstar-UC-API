@@ -31,7 +31,7 @@ class DinstarDevice(DinstarUC):
         endpoint = "/api/get_status"
         data = '["performance"]'
         # Send the JSON array as a string
-        response = self.send_raw_request(endpoint, data, method="POST")
+        response = self.send_api_request(endpoint, data, method="POST",raw=True)
 
         if response is None or response.status_code != 200:
             return None

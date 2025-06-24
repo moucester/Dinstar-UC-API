@@ -122,7 +122,7 @@ class DinstarSMS(DinstarUC):
                 payload["port"] = sorted(ports_set)
 
         endpoint = "/api/send_sms"
-        response_json = self.send_request(endpoint, payload)
+        response_json = self.send_api_request(endpoint, payload)
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         data = None
@@ -135,7 +135,7 @@ class DinstarSMS(DinstarUC):
             )
         return DinstarApiResponse(error_code=error_code, sn=sn, data=data)
 
-    def query_sms_result(
+    def get_sms_result(
         self,
         user_ids: Optional[List[int]] = None,
         numbers: Optional[List[str]] = None,
@@ -207,14 +207,14 @@ class DinstarSMS(DinstarUC):
             data["time_after"] = time_after
         if time_before:
             data["time_before"] = time_before
-        response_json = self.send_request(endpoint, data)
+        response_json = self.send_api_request(endpoint, data)
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         raw_results = response_json.get("result", [])
         data = [DinstarSMSResult(**item) for item in raw_results] if error_code == 200 else None
         return DinstarApiResponse(error_code=error_code, sn=sn, data=data)
 
-    def query_sms_delivery_status(
+    def get_sms_delivery_status(
         self,
         numbers: Optional[List[str]] = None,
         ports: Optional[List[int]] = None,
@@ -274,14 +274,14 @@ class DinstarSMS(DinstarUC):
             data["time_after"] = time_after
         if time_before:
             data["time_before"] = time_before
-        response_json = self.send_request(endpoint, data)
+        response_json = self.send_api_request(endpoint, data)
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         raw_results = response_json.get("result", [])
         data = [DinstarSMSDeliveryStatus(**item) for item in raw_results] if error_code == 200 else None
         return DinstarApiResponse(error_code=error_code, sn=sn, data=data)
 
-    def query_sms_queue(self) -> DinstarApiResponse[DinstarSMSQueueStatus]:
+    def get_sms_queue(self) -> DinstarApiResponse[DinstarSMSQueueStatus]:
         """
         Query the current SMS queue status on the Dinstar gateway.
 
@@ -297,7 +297,7 @@ class DinstarSMS(DinstarUC):
             }
         """
         endpoint = "/api/query_sms_queue"
-        response_json = self.send_request(endpoint, {})
+        response_json = self.send_api_request(endpoint, {})
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         data = None
@@ -305,7 +305,7 @@ class DinstarSMS(DinstarUC):
             data = DinstarSMSQueueStatus(in_queue=response_json.get("in_queue", 0))
         return DinstarApiResponse(error_code=error_code, sn=sn, data=data)
 
-    def receive_sms(
+    def get_sms(
             self,
             incoming_sms_id: Optional[int] = 0,
             flag: Optional[str] = "unread",
@@ -354,7 +354,7 @@ class DinstarSMS(DinstarUC):
         data = {"incoming_sms_id": incoming_sms_id, "flag": flag}
         if ports:
             data["port"] = ports
-        response_json = self.send_request(endpoint, data)
+        response_json = self.send_api_request(endpoint, data)
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         raw_messages = response_json.get("sms", [])
@@ -388,7 +388,7 @@ class DinstarSMS(DinstarUC):
                 }
         """
         endpoint = f"/api/stop_sms?task_id={task_id}"
-        response_json = self.send_request(endpoint, {})
+        response_json = self.send_api_request(endpoint, {})
         error_code = response_json.get("error_code")
         sn = response_json.get("sn")
         data = None
