@@ -1,3 +1,15 @@
-/.env
-/.idea
+# Build outputs
+/dist/
+/build/
+/*.egg-info/
+
+# Environment
+.env
 /.venv
+
+# IDE
+/.idea
+
+# Pytest cache
+/__pycache__/
+/.pytest_cache/
