@@ -266,3 +266,33 @@ class DinstarStopSMSTaskResponse:
     error_code: int
     sn: str
 
+"""
+Dinstar USSD dataclasses
+"""
+
+@dataclass
+class DinstarUSSDResult:
+    """
+    Represents the result of a USSD send attempt for a specific port.
+
+    Attributes:
+        port (int): Port number the USSD was sent from.
+        status (int): Status code of the USSD operation.
+                      - 200: Sent successfully
+                      - 486: Port is busy
+                      - 503: Port is not registered
+    """
+    port: int
+    status: int
+
+@dataclass
+class DinstarUSSDReply:
+    """
+    Represents a USSD reply received from a specific port.
+
+    Attributes:
+        port (int): Port number that received the USSD reply.
+        text (str): The content of the USSD reply.
+    """
+    port: int
+    text: str
